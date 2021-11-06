@@ -25,5 +25,6 @@ Chain.prototype.addBlock = async function (data) {
   const parentHash = this.getLatestBlockHash();
   const newBlock = new Block(data, parentHash);
 
+  await newBlock.setup();
   this.blocks.push(newBlock);
 };

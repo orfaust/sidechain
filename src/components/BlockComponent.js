@@ -1,46 +1,52 @@
-import { useState } from "react"
+import { useState } from "react";
 
-import styled from "styled-components"
+import styled from "styled-components";
 
 export default function BlockComponent(props) {
-  const [keys, values] = resolveValues(props)
+  const [keys, values] = resolveValues(props);
 
-  const [isOpen, setIsOpen] = useState()
+  const [isOpen, setIsOpen] = useState();
 
-  const className = "inner" + (isOpen ? " is-open" : "")
+  const className = "inner" + (isOpen ? " is-open" : "");
 
-  console.log(props)
+  // console.log(props);
 
   return (
     <StyledBlockComponent>
       <div className={className}>
         {keys.map((key, index) => {
-          const value = values[index]
+          const value = values[index];
 
-          let className = "value"
+          let className = "value";
 
           if (key === "index") {
-            className += " toggler"
+            className += " toggler";
           }
 
-          return (value !== null) && (
-            <div className={className} onClick={() => handleClick(key)}>
-              <pre>{value}</pre>
-            </div>
-          )
+          return (
+            value !== null && (
+              <div
+                key={key}
+                className={className}
+                onClick={() => handleClick(key)}
+              >
+                <pre>{value}</pre>
+              </div>
+            )
+          );
         })}
       </div>
     </StyledBlockComponent>
-  )
+  );
 
   function handleClick(key) {
     if (key === "index") {
-      setIsOpen(old => !old)
+      setIsOpen((old) => !old);
     }
   }
 }
 
-const StyledBlockComponent = styled.div `
+const StyledBlockComponent = styled.div`
   width: 100%;
   padding: 0.5em;
   color: #ccc;
@@ -56,7 +62,7 @@ const StyledBlockComponent = styled.div `
       padding: 1em;
 
       pre {
-        white-space: normal
+        white-space: normal;
       }
 
       &.toggler {
@@ -69,7 +75,7 @@ const StyledBlockComponent = styled.div `
         }
       }
 
-      &+.value {
+      & + .value {
         display: none;
         padding-top: 0;
       }
@@ -84,43 +90,43 @@ const StyledBlockComponent = styled.div `
       }
     }
   }
-`
+`;
 
 function resolveValues(props) {
   const resolvers = getResolvers(),
     keys = [],
-    values = []
+    values = [];
 
   for (const key in resolvers) {
-    const resolver = resolvers[key]
-    const value = resolver(props[key])
+    const resolver = resolvers[key];
+    const value = resolver(props[key]);
 
-    if (value === null) continue
+    if (value === null) continue;
 
-    keys.push(key)
-    values.push(value)
+    keys.push(key);
+    values.push(value);
   }
 
-  return [keys, values]
+  return [keys, values];
 }
 
 function getResolvers() {
   return {
-    index: value => "Id    #" + value,
-    data: value => "Data  " + value,
-    timestamp: value => "Time  " + timestampToString(value),
-    nonce: value => "Nonce " + value,
-    hash: value => "Hash  " + value,
-    parentHash: value => "Phash " + value,
-  }
+    index: (value) => "Id    #" + value,
+    data: (value) => "Data  " + value,
+    timestamp: (value) => "Time  " + timestampToString(value),
+    nonce: (value) => "Nonce " + value,
+    hash: (value) => "Hash  " + value,
+    parentHash: (value) => "Phash " + value,
+  };
 }
 
 function timestampToString(timestamp) {
-  const date = new Date(timestamp)
+  const date = new Date(timestamp);
 
-  return date.toDateString() + " " + [
-    date.getUTCHours(),
-    date.getUTCMinutes(),
-    date.getUTCSeconds()
-  ].join(":")
+  return (
+    date.toDateString() +
+    " " +
+    [date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()].join(":")
+  );
 }
