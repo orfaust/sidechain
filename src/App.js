@@ -56,7 +56,8 @@ export default function App() {
 const StyledApp = styled.div `
   font-family: sans-serif;
   font-family: -webkit-pictograph;
-  background-color: #122;
+  background-color: #4c6c6c;
   color: #8aa;
   min-height: 100vh;
+  overflow-y: scroll;
 `
