@@ -1,29 +1,29 @@
-import Block from "./Block"
+import Block from "./Block";
 
 export default function Chain(blocks) {
-	this.blocks = blocks ? blocks : []
+  this.blocks = blocks ? blocks : [];
 
-	if (!blocks) {
-		this.createGenesisBlock()
-	}
+  if (!blocks) {
+    this.createGenesisBlock();
+  }
 }
 
-Chain.prototype.createGenesisBlock = function() {
-	this.addBlock("Genesis block")
-}
+Chain.prototype.createGenesisBlock = function () {
+  this.addBlock("Genesis block");
+};
 
-Chain.prototype.getLatestBlockHash = function() {
-	if (this.blocks.length === 0) {
-		return null
-	}
+Chain.prototype.getLatestBlockHash = function () {
+  if (this.blocks.length === 0) {
+    return null;
+  }
 
-	const latestBlock = this.blocks[this.blocks.length - 1]
-	return latestBlock.hash
-}
+  const latestBlock = this.blocks[this.blocks.length - 1];
+  return latestBlock.hash;
+};
 
-Chain.prototype.addBlock = async function(data) {
-	const parentHash = this.getLatestBlockHash()
-	const newBlock = await new Block(data, parentHash)
+Chain.prototype.addBlock = async function (data) {
+  const parentHash = this.getLatestBlockHash();
+  const newBlock = new Block(data, parentHash);
 
-	this.blocks.push(newBlock)
-}
+  this.blocks.push(newBlock);
+};
