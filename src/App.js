@@ -13,7 +13,7 @@ import InsertBlock from "./components/InsertBlock"
 export default function App() {
   const [storedBlocks, setStoredBlocks] = useLocalStorage("sidechain", "null")
 
-  useState(() => {
+  useEffect(() => {
     window.sidechain = new Chain(JSON.parse(storedBlocks))
   })
 
