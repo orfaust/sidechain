@@ -1,59 +1,31 @@
-import { useState } from "react";
-import useLocalStorage from "react-use-localstorage";
 import styled from "styled-components";
 
-import Chain from "../classes/Chain";
-
-import ChainComponent from "./ChainComponent";
-import BlockComponent from "./BlockComponent";
+import Chain from "./Chain";
 import InsertBlock from "./InsertBlock";
 
+import Observable from "../classes/Observable";
+
 export default function Node({ id }) {
-  const [storedBlocks, setStoredBlocks] = useLocalStorage(
-    "sidechain-" + id,
-    "null"
-  );
+  const insertTrigger = new Observable(insertBlock);
 
-  const sidechain = new Chain(JSON.parse(storedBlocks));
-  window.sidechain = sidechain;
-
-  const [blocks, setBlocks] = useState(sidechain.blocks);
-
-  const [pendingBlocks, setPendingBlocks] = useState(0);
+  let pendingBlocks = 0;
 
   return (
-    <StyledNode>
-      <InsertBlock insertHandler={insertBlock} />
+    <StyledNode className="node">
+      <InsertBlock insertHandler={insertTrigger.execute} />
 
-      <ChainComponent>
-        {blocks &&
-          [...blocks].reverse().map((block, index) => {
-            const count = blocks.length - index - 1;
-
-            return <BlockComponent key={index} index={count} {...block} />;
-          })}
-      </ChainComponent>
+      <Chain id={id} insertTrigger={insertTrigger} />
     </StyledNode>
   );
 
-  async function insertBlock(data) {
-    if (pendingBlocks >= 3) {
-      return console.log("pendingBlocks limit reached");
-    }
-
-    setPendingBlocks((old) => old + 1);
-
-    await sidechain.addBlock(data);
-
-    setBlocks(sidechain.blocks);
-    setStoredBlocks(JSON.stringify(sidechain.blocks));
-
-    setPendingBlocks((old) => old - 1);
+  async function insertBlock(listener, data) {
+    await listener(data);
   }
 }
 
 const StyledNode = styled.div`
-  width: 20%;
-  min-width: 20em;
-  max-width: 32em;
+  width: 20em;
+  background: #ff000070;
+  border-radius: 1em;
+  margin: 0.5em;
 `;

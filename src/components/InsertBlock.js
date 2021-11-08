@@ -1,49 +1,47 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
-import { useState } from "react"
+import { useState } from "react";
 
 export default function InsertBlock({ insertHandler }) {
-  const [data, setData] = useState("")
+  const [data, setData] = useState("");
 
   return (
     <StyledInsertBlock>
       <form onSubmit={handleSubmit}>
-        <input
-          placeholder="insert data"
-          onChange={handleChange}
-          value={data}
-        />
+        <input placeholder="insert data" onChange={handleChange} value={data} />
 
-        <button type="submit" onClick={handleSubmit}>Submit</button>
+        <button type="submit" onClick={handleSubmit}>
+          Submit
+        </button>
       </form>
     </StyledInsertBlock>
-  )
+  );
 
   function handleSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const value = data.trim()
+    const value = data.trim();
 
-    if (value.length === 0) return
+    if (value.length === 0) return;
 
-    insertHandler(value)
-    setData("")
+    insertHandler(value);
+    setData("");
   }
 
   function handleChange(event) {
-    setData(event.target.value)
+    setData(event.target.value);
   }
 }
 
-const StyledInsertBlock = styled.div `
+const StyledInsertBlock = styled.div`
   form {
     padding: 1em;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 
-    input, button {
-      font-size: 1.2em;
+    input,
+    button {
       padding: 0.5em;
       border: none;
       font-family: inherit;
@@ -57,4 +55,4 @@ const StyledInsertBlock = styled.div `
       flex: 1;
     }
   }
-`
+`;

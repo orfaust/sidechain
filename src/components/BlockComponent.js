@@ -12,7 +12,7 @@ export default function BlockComponent(props) {
   // console.log(props);
 
   return (
-    <StyledBlockComponent>
+    <Styled>
       <div className={className}>
         {keys.map((key, index) => {
           const value = values[index];
@@ -36,7 +36,7 @@ export default function BlockComponent(props) {
           );
         })}
       </div>
-    </StyledBlockComponent>
+    </Styled>
   );
 
   function handleClick(key) {
@@ -46,7 +46,7 @@ export default function BlockComponent(props) {
   }
 }
 
-const StyledBlockComponent = styled.div`
+const Styled = styled.div`
   width: 100%;
   padding: 0.5em;
   color: #ccc;

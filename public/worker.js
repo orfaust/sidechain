@@ -3,7 +3,9 @@ importScripts("./crypto-js/crypto-js.js");
 var HASH_DIFFICULTY = 4;
 
 addEventListener("message", (event) => {
+  console.log("started", event.data.timestamp);
   var response = calculateHash(event.data);
+  console.log("finished", event.data.timestamp);
 
   postMessage(response);
 });
