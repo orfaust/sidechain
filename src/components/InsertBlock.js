@@ -35,17 +35,11 @@ export default function InsertBlock({ insertHandler }) {
 
 const StyledInsertBlock = styled.div`
   form {
-    padding: 1em;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+    padding: 0 1em;
 
-    input,
-    button {
-      padding: 0.5em;
-      border: none;
-      font-family: inherit;
-    }
     input {
       background-color: #fffd;
       flex: 5;

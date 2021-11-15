@@ -1,34 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useLocalStorage from "react-use-localstorage";
 import styled from "styled-components";
 
 import ChainClass from "../classes/ChainClass";
 import BlockComponent from "./BlockComponent";
 
-export default function Chain({ id, insertTrigger }) {
-	const [storedBlocks, setStoredBlocks] = useLocalStorage(
-		"sidechain-" + id,
-		"null"
-	);
+export default function Chain({ id, insertBlockCmd }) {
+	const [storedBlocks, setStoredBlocks] = useLocalStorage("node-" + id, "null");
 
 	const sidechain = new ChainClass(JSON.parse(storedBlocks));
-	window.sidechain = sidechain;
 
-	useState(() => {
-		insertTrigger.subscribe(insertBlock);
-	}, [sidechain]);
-
-	async function insertBlock(data) {
-		const newBlock = await sidechain.addBlock(data);
-
-		// setBlocks(sidechain.blocks);
-		setStoredBlocks(JSON.stringify(sidechain.blocks));
+	// initialize chain
+	if (sidechain.blocks.length === 0) {
+		insertBlock("Genesis block");
 	}
 
-	// const [blocks, setBlocks] = useState(sidechain.blocks);
-	const blocks = [...sidechain.blocks].reverse();
+	useEffect(() => {
+		// subscribe the insert listener
+		insertBlockCmd.subscribe(insertBlock);
+	}, [insertBlockCmd]);
 
 	const [pendingBlocks, setPendingBlocks] = useState(0);
+
+	const blocks = [...sidechain.blocks].reverse();
 
 	return (
 		<Styled className="chain">
@@ -40,10 +34,16 @@ export default function Chain({ id, insertTrigger }) {
 				})}
 		</Styled>
 	);
+
+	async function insertBlock(data) {
+		const newBlock = await sidechain.addBlock(data);
+
+		setStoredBlocks(JSON.stringify(sidechain.blocks));
+	}
 }
 
 const Styled = styled.div`
 	display: flex;
 	flex-wrap: wrap;
-	padding: 0.5em;
+	padding: 0.5em 0;
 `;

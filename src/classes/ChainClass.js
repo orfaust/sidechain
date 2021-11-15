@@ -3,8 +3,10 @@ import BlockClass from "./BlockClass";
 export default function ChainClass(blocks) {
   this.blocks = blocks ? blocks : [];
 
+  this.difficulty = 4;
+
   if (!blocks) {
-    this.createGenesisBlock();
+    // this.createGenesisBlock();
   }
 }
 
@@ -23,9 +25,9 @@ ChainClass.prototype.getLatestBlockHash = function () {
 
 ChainClass.prototype.addBlock = async function (data) {
   const parentHash = this.getLatestBlockHash();
-  const newBlock = new BlockClass(data, parentHash);
+  const newBlock = new BlockClass({ data, parentHash });
 
-  await newBlock.setup();
+  await newBlock.mineHash(this.difficulty);
   this.blocks.push(newBlock);
 
   return newBlock;

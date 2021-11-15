@@ -48,7 +48,7 @@ export default function BlockComponent(props) {
 
 const Styled = styled.div`
   width: 100%;
-  padding: 0.5em;
+  padding: 0.5em 1em;
   color: #ccc;
   font-family: monospace;
 

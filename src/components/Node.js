@@ -1,31 +1,57 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 import Chain from "./Chain";
 import InsertBlock from "./InsertBlock";
 
-import Observable from "../classes/Observable";
+import Command from "../classes/Command";
 
-export default function Node({ id }) {
-  const insertTrigger = new Observable(insertBlock);
+export default function Node(props) {
+  const { id, name, handleSelected } = props;
+
+  const insertBlockCmd = new Command();
 
   let pendingBlocks = 0;
 
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <StyledNode className="node">
-      <InsertBlock insertHandler={insertTrigger.execute} />
+      <div className="node-id" onClick={handleClick}>
+        {name}
+      </div>
 
-      <Chain id={id} insertTrigger={insertTrigger} />
+      {/*
+      <div className="details">
+        <InsertBlock insertHandler={insertBlockCmd.execute} />
+        <Chain {...props} insertBlockCmd={insertBlockCmd} />
+      </div>
+      */}
     </StyledNode>
   );
 
-  async function insertBlock(listener, data) {
-    await listener(data);
+  function handleClick(e) {
+    handleSelected(props);
   }
 }
 
 const StyledNode = styled.div`
-  width: 20em;
   background: #ff000070;
   border-radius: 1em;
   margin: 0.5em;
+  // width: 5em;
+
+  .node-id {
+    color: #fff8;
+    cursor: pointer;
+    padding: 1em;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+
+  .details {
+    display: none;
+  }
 `;
